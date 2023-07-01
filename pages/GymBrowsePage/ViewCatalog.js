@@ -5,7 +5,7 @@ import { AppContext } from "../../appContext";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-class MyBookings extends React.Component {
+class ViewCatalog extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,7 +14,7 @@ class MyBookings extends React.Component {
       }
     
       componentDidMount(){
-        a = fetch(`http://10.0.2.2:8080/user/all-gym-centres`,{
+        a = fetch(`http://10.0.2.2:8080/customer/viewCatalog`,{
             method: 'GET',
             headers: { 
               'Accept': 'application/json'},
@@ -86,6 +86,6 @@ const styles = StyleSheet.create({
     }
   });
 
-  MyBookings.contextType = AppContext;
+  ViewCatalog.contextType = AppContext;
 
-export default MyBookings;
+export default ViewCatalog;

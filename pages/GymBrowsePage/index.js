@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import BookSlot from "./BookSlot";
-import MyBookings from "./MyBookings";
+import ViewCatalog from "./ViewCatalog";
 
 const Tab = createBottomTabNavigator();
 
@@ -12,10 +12,10 @@ class GymBrowsePage extends React.Component {
     return (
       <Tab.Navigator>
         <Tab.Screen
-          name="My Bookings"
-          component={MyBookings}
+          name="View Catalog"
+          component={ViewCatalog}
           options={{
-            tabBarLabel: "My Bookings",
+            tabBarLabel: "View Catalog",
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons
                 name="account-heart"
