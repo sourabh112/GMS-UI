@@ -9,23 +9,25 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 const Stack = createStackNavigator();
 
 // Context
-import { cities, AppContext } from "./appContext";
+import { user, AppContext } from "./appContext";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.changeCity = (city) => {
+      console.log("New Thing",city)
       this.setState({
-        city: city,
+        users: city,
       });
     };
     this.state = {
-      user: cities,
+      users: user,
       changeCity: this.changeCity,
     };
   }
 
   render() {
+    // console.log(this.state.users)
     return (
       <NavigationContainer>
         <AppContext.Provider value={this.state}>

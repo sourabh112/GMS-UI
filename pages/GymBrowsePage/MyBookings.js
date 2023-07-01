@@ -1,7 +1,8 @@
 import React from "react";
-import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import { Text, TouchableOpacity, View, StyleSheet,Image } from "react-native";
 import { Card } from 'react-native-paper';
-
+import { AppContext } from "../../appContext";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 class MyBookings extends React.Component {
@@ -13,23 +14,33 @@ class MyBookings extends React.Component {
       }
     
       componentDidMount(){
-        console.log("BookSlot mounted");
         a = fetch(`http://10.0.2.2:8080/user/all-gym-centres`,{
             method: 'GET',
             headers: { 
               'Accept': 'application/json'},
         })
             .then((res) => {
-            //   console.log(res.json())
                 return res.json()
             })
             .then(res => this.setState({ data: res }))
-            .catch(err => console.error(err));
+            .catch(err => {
+              Toast.show(
+                {
+                  type:"error",
+                  text1:`Sorry Something Unexpected happened`,
+                  position:"top",
+                  autoHide:true,
+                  visibilityTime: 5000
+                }
+              )
+            });
       }
     
       randomfunction = (el) => {
         return (
             <View key={el.gymId} style={styles.container}>
+                <Image source={require('../../assets/a.webp')}
+                  style={{width: 160, height: 160}} />
                 <Text style={styles.text}>{el.name}</Text>
                 <Text style={styles.text}>{el.gymId}</Text>
             </View>
@@ -37,14 +48,13 @@ class MyBookings extends React.Component {
     }
     
       render() {
-        console.log(this.state.data);
         return (
           <SafeAreaView style={styles.safeArea}>
-              <Text>Gyms List:</Text>
+              <Text>{this.context.users.userName}</Text>
               <View style={styles.cards}>
-                    {
-                        this.state.data && this.state.data.map((el) => this.randomfunction(el))
-                    }
+                      {
+                          this.state.data && this.state.data.map((el) => this.randomfunction(el))
+                      }
                 </View>
           </SafeAreaView>
         );
@@ -75,5 +85,7 @@ const styles = StyleSheet.create({
       flexWrap: "wrap"
     }
   });
+
+  MyBookings.contextType = AppContext;
 
 export default MyBookings;

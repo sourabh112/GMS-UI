@@ -11,9 +11,6 @@ class BookSlot extends React.Component {
     }
 
     componentDidMount() {
-        // get request
-
-
         fetch(`http://localhost:3000/api/cities/${this.context.city.toLowerCase()}/gyms`)
             .then((res) => {
                 return res.json()
@@ -35,6 +32,7 @@ class BookSlot extends React.Component {
     render() {
         return (
             <View>
+                {this.context.users}
                 {
                     this.state.data && this.state.data.map((el) => this.renderList(el))
                 }

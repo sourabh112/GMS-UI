@@ -1,7 +1,5 @@
 import React from "react";
-// import CityDropDown from "../components/CityDropdown";
 import { Card } from 'react-native-paper';
-
 import { AppContext } from "../appContext";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlatList } from "react-native-gesture-handler";
@@ -32,8 +30,6 @@ class HomePage extends React.Component {
   }
 
 loginButton = () => {
-  console.log(this.context.user);
-  console.log("BookSlot mounted");
           const requestOptions = {
             method: 'POST',
             headers: { 
@@ -46,12 +42,13 @@ loginButton = () => {
           };
           a = fetch(`http://10.0.2.2:8080/user/login`, requestOptions)
               .then((res) => {
-                console.log(res)
                 if(res.status==200){
                   return res.json()
                   .then(res => {
                     this.setState({ data: res })
-                    console.log("Working");
+                    this.context.changeCity({
+                      userName: res.userName
+                  })
                     this.props.navigation.navigate("Gyms")
                     
                   })
@@ -74,7 +71,6 @@ loginButton = () => {
 
 
   render() {
-    console.log(this.state.data);
     return (
       <SafeAreaView style={{flex: 1, justifyContent: 'center', backgroundColor: 'white'}}>
       <View style={{paddingHorizontal: 25}}>

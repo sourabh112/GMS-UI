@@ -1,11 +1,11 @@
 import React from "react";
 
-export const cities = {
+export const user = {
     userName: "Bangalore",
 }
 
 const globalContext = {
-    city: cities,
+    city: user.userName,
     changeCity: () => { }
 }
 
