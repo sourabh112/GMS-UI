@@ -69,6 +69,10 @@ loginButton = () => {
               .catch(err => console.error(err));
 }
 
+navi = () =>{
+  this.props.navigation.navigate("SignUp");
+}
+
 
   render() {
     return (
@@ -89,13 +93,13 @@ loginButton = () => {
         </Text>
         <View style={styles.inputfeild}>
           <MaterialIcons
-            name= {'alternate-email'}
+            name= {'person'}
             size={20}
             color="#666"
             style={{marginRight: 5}}
           />
             <TextInput
-              placeholder={'Email ID'}
+              placeholder={'User Id'}
               keyboardType={"email-address"}
               style={styles.inputtext}
               onChangeText={textadd = (newText) =>{
@@ -121,8 +125,8 @@ loginButton = () => {
             />
         </View>
         <CustomButton label={"Login"} onPress={this.loginButton} />
-        <Text style={{textAlign: 'center', color: '#666', marginBottom: 30}}>
-          Or, Sign Up
+        <Text style={{textAlign: 'center', color: '#666', marginBottom: 30}} onPress={this.navi}>
+          Or, Create A new Account
         </Text>
       </View>
     </SafeAreaView>

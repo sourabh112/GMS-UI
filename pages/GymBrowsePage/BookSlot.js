@@ -1,62 +1,83 @@
-import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import React, { Component } from 'react';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { AppContext } from "../../appContext";
 
-class BookSlot extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: null
-        }
-    }
+// const API_URL = ;
 
-    componentDidMount() {
-        fetch(`http://localhost:3000/api/cities/${this.context.city.toLowerCase()}/gyms`)
-            .then((res) => {
-                return res.json()
-            })
-            .then(res => this.setState({ data: res }))
-            .catch(err => console.error(err));
-    }
+class MyBookings extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: []
+    };
+  }
 
-    renderList = (el) => {
-        return (
-            <View key={el.slug} style={styles.container}>
-                <Text style={styles.text}>{el.name}</Text>
-                <Text style={styles.text}>{el.city}</Text>
-            </View>
-        )
-    }
+  componentDidMount() {
+    console.log("Showing booking details");
+    fetch('http://10.0.2.2:8080/customer/viewMyBookings?customerId='+this.context.users.userName)
+    .then((res) => {
+        return res.json()
 
+    })
+    .then((res) => {
+        console.log(res)
+        this.setState({ data: res })})
+    .catch(err => console.error(err));
+  }
 
-    render() {
-        return (
-            <View>
-                {this.context.users}
-                {
-                    this.state.data && this.state.data.map((el) => this.renderList(el))
-                }
-            </View>
-        )
-    }
+  renderItem = ({ item }) => (
+    <View style={styles.itemContainer}>
+      <Text style={styles.itemKey}>{item.gymnasium.name}</Text>
+      <Text style={styles.itemValue}>{item.gymnasium.address}</Text>
+      <Text style={styles.itemValue}>{item.time}</Text>
+      <Text style={styles.itemValue}>{item.date[2]}: {item.date[1]}: {item.date[0]}</Text>
+    </View>
+  );
+
+  render() {
+    const { data } = this.state;
+
+    return (
+      <View style={styles.container}>
+        <Text style={styles.heading}>Upcoming Bookings</Text>
+        <FlatList
+          data={data}
+          renderItem={this.renderItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flexDirection: "row",
-        padding: 10,
-        margin: 10,
-        borderRadius: 3,
-        justifyContent: "center",
-        alignContent: "center",
-        backgroundColor: "grey",
-    },
-    text: {
-        fontSize: 16,
-        margin: 10,
-    }
-})
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#f5f5f5',
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    textAlign:'center',
+  },
+  itemContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 12,
+  },
+  itemKey: {
+    fontWeight: 'bold',
+    marginBottom: 6,
+  },
+  itemValue: {
+    color: '#555',
+    marginBottom: 3,
+  },
+});
 
-BookSlot.contextType = AppContext
-
-export default BookSlot;
+MyBookings.contextType = AppContext;
+export default MyBookings;
