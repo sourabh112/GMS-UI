@@ -5,6 +5,7 @@ import { AppContext } from "../../appContext";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {Calendar} from 'react-native-calendars';
+import { ScrollView } from "react-native-gesture-handler";
 
 class ViewCatalog extends React.Component {
     constructor(props) {
@@ -50,8 +51,10 @@ class ViewCatalog extends React.Component {
               <View key={el.gymId}  >
                   <Image source={require('../../assets/a.webp')}
                     style={{width: 160, height: 160}} />
-                  <Text style={styles.text}>{el.name}</Text>
-                  <Text style={styles.text}>{el.gymId}</Text>
+                    <Text style={{fontSize:20}}>{el.name}:</Text>
+                  <Text style={{fontSize:12,marginTop:2}}>{el.address}</Text>
+                  <Text style={styles.text}>Total Area: {el.totalArea}</Text>
+                  <Text style={styles.text}>Number of Items: {el.numItem}</Text>
               </View>
               </TouchableOpacity>
           </View>
@@ -66,8 +69,8 @@ class ViewCatalog extends React.Component {
         console.log(date.getDate())
         var max_date = date.getFullYear()+"-"+date.getMonth()+"-"+(date.getDate()+6);
         return (
+          <ScrollView>
           <SafeAreaView style={styles.safeArea}>
-              <Text>{this.context.users.userName}</Text>
               <View style={styles.cards}>
                       {
                           this.state.data && this.state.data.map((el) => this.randomfunction(el))
@@ -113,6 +116,7 @@ class ViewCatalog extends React.Component {
                       </Modal>  
                 </View>
           </SafeAreaView>
+          </ScrollView>
         );
       }
 }
@@ -133,7 +137,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 16,
-        margin: 10,
+        marginTop:2
     },
     cards:{
       flexDirection: "row",

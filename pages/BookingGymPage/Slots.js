@@ -78,6 +78,7 @@ class Slots extends React.Component {
                 }
               )
             });
+            this.setState({ isVisible:!this.state.isVisible})
       }
 
       randomfunction = (el) => {
