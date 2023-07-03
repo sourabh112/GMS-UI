@@ -30,7 +30,7 @@ class Slots extends React.Component {
               "day":this.state.day
           })
           };
-          a = fetch(`http://10.0.2.2:8080/customer/viewGymnasiumSlot`, requestOptions)
+          a = fetch(`http://10.0.2.2:32001/customer/viewGymnasiumSlot`, requestOptions)
             .then((res) => {
                 return res.json()
             })
@@ -62,11 +62,42 @@ class Slots extends React.Component {
                 "userName":this.context.users.userName
             })
           };
-          a = fetch(`http://10.0.2.2:8080/customer/bookingSlot`, requestOptions)
+          a = fetch(`http://10.0.2.2:32001/customer/bookingSlot`, requestOptions)
             .then((res) => {
                 return res.json()
             })
-            // .then(res => this.setState({ data: res }))
+            .then(res => {
+              // console.log("here:",res)
+              if(res==0){
+                Toast.show(
+                  {
+                    type:"info",
+                    text1:`New Slot Booked, Older Slot Cancelled`,
+                    position:"top",
+                    autoHide:true,
+                    visibilityTime: 5000
+                  }
+                )
+              }else if(res==1){
+                Toast.show(
+                  {
+                    type:"error",
+                    text1:`Sorry All seats in current slots filled`,
+                    position:"top",
+                    autoHide:true,
+                    visibilityTime: 5000
+                  })
+              }else if(res==2){
+                Toast.show(
+                  {
+                    type:"success",
+                    text1:`New Booking Confirmed`,
+                    position:"top",
+                    autoHide:true,
+                    visibilityTime: 5000
+                  })
+              }
+            })
             .catch(err => {
               Toast.show(
                 {
@@ -78,6 +109,7 @@ class Slots extends React.Component {
                 }
               )
             });
+            this.componentWillUnmount;
             this.setState({ isVisible:!this.state.isVisible})
       }
 
@@ -86,14 +118,17 @@ class Slots extends React.Component {
         var curr_date = date.getFullYear()+"-"+date.getMonth()+"-"+(date.getDate()+1);
         console.log(date.getDate())
         var max_date = date.getFullYear()+"-"+date.getMonth()+"-"+(date.getDate()+6);
+        var timing = ""
+        if(el.time == 0) timings = "6:00 - 7:00"
+        else if(el.time == 1) timings = "7:00 - 8:00"
+        else if(el.time == 2) timings = "17:00 - 18:00"
+        else if(el.time == 3) timings = "18:00 - 19:00"
         return (
-            <View>
+            <View key={el.slotId}>
             <TouchableOpacity style={styles.container} onPress={() => {this.setState({ isVisible: true,slotId: el.slotId}); }}>
-              <View key={el.gymId}  >
-                  <Image source={require('../../assets/a.webp')}
-                    style={{width: 160, height: 160}} />
-                  <Text style={styles.text}>{el.slotId}</Text>
-                  <Text style={styles.text}>{el.capacity}</Text>
+              <View   >
+                    <Text style={styles.text}>Timings:{timings}</Text>
+                  <Text style={styles.text}>Avilable Seats:{el.capacity}</Text>
               </View>
               </TouchableOpacity>
                 
@@ -125,13 +160,17 @@ class Slots extends React.Component {
                     <Text style={{
                       fontSize: 20,
                       margin: 5
-                    }}>Details:</Text>
-                    
+                    }}>Confirm Your Booking:</Text>
+
                     <View style={{flexWrap:"wrap",flexDirection:"row"}}>
-                    <Button title="Change Slot" onPress = {() => {  
-                        this.setState({ isVisible:!this.state.isVisible})}}/>
-                    <Button title="Confirm Booking" onPress = {() => {  
-                        this.slotBooking()}}/> 
+                    <TouchableOpacity style={styles.button} onPress = {() => {  
+                        this.setState({ isVisible:!this.state.isVisible})}}>
+                          <Text>Change Slot</Text>
+                      </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress = {() => {  
+                        this.slotBooking()}}>
+                      <Text>Book Your Slot</Text>
+                      </TouchableOpacity> 
                     </View> 
                 </View>  
               </Modal>
@@ -148,16 +187,18 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         padding: 10,
         margin: 10,
-        borderRadius: 3,
+        borderRadius: 5,
         justifyContent: "flex-start",
         alignContent: "flex-start",
-        backgroundColor: "grey",
-        flexWrap: "wrap",
-        width: 175
+        backgroundColor: "#F5F5F5",
+        borderStyle:"solid",
+        borderColor: "Black",
+        borderWidth:2
+        // flexWrap: "wrap",
+        // width: 175
     },
     text: {
         fontSize: 16,
-        margin: 10,
     },
     cards:{
       flexDirection: "row",
@@ -173,11 +214,23 @@ const styles = StyleSheet.create({
         borderRadius:10,  
         borderWidth: 1,  
         borderColor: '#fff',    
-        backgroundColor : "grey", 
+        backgroundColor: "#F5F5F5",
+        borderStyle:"solid",
+        borderColor: "Black",
+        borderWidth:2,
         marginTop: 80,  
         marginLeft: 15,  
          
          },  
+    button: {
+      borderRadius: 5,
+      backgroundColor: "#F5F5F5",
+      borderStyle:"solid",
+      borderColor: "Black",
+      borderWidth:2,
+      margin:4,
+      padding:5
+    }
   });
 
   Slots.contextType = AppContext;

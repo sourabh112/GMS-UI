@@ -18,7 +18,7 @@ class ViewCatalog extends React.Component {
       }
     
       componentDidMount(){
-        a = fetch(`http://10.0.2.2:8080/customer/viewCatalog`,{
+        a = fetch(`http://10.0.2.2:32001/customer/viewCatalog`,{
             method: 'GET',
             headers: { 
               'Accept': 'application/json'},
@@ -46,9 +46,9 @@ class ViewCatalog extends React.Component {
       }
       randomfunction = (el) => {
         return (
-          <View>
-            <TouchableOpacity style={styles.container} onPress={() => {this.setState({ isVisible: true});this.setState({gymId:el.gymId})}}>
-              <View key={el.gymId}  >
+          <View key={el.gymId}>
+            <TouchableOpacity  style={styles.container} onPress={() => {this.setState({ isVisible: true});this.setState({gymId:el.gymId})}}>
+              <View   >
                   <Image source={require('../../assets/a.webp')}
                     style={{width: 160, height: 160}} />
                     <Text style={{fontSize:20}}>{el.name}:</Text>
@@ -128,10 +128,20 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         padding: 10,
         margin: 10,
-        borderRadius: 3,
+        borderRadius: 5,
         justifyContent: "flex-start",
-        alignContent: "flex-start",
-        backgroundColor: "grey",
+        alignContent: "flex-start",   
+        backgroundColor: "#F5F5F5",
+        borderStyle:"solid",
+        borderColor: "Black",
+        borderWidth:2,
+        shadowColor: "#000000",
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        shadowOffset: {
+          height: 1,
+          width: 1
+        },    
         flexWrap: "wrap",
         width: 175
     },
@@ -151,8 +161,11 @@ const styles = StyleSheet.create({
       width: '80%',  
       borderRadius:10,  
       borderWidth: 1,  
-      borderColor: '#fff',    
-      backgroundColor : "grey", 
+      borderColor: '#fff',       
+      backgroundColor: "#F5F5F5",
+      borderStyle:"solid",
+      borderColor: "Black",
+      borderWidth:2,
       marginTop: 80,  
       marginLeft: 40,  
        

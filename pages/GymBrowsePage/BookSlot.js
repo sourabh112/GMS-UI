@@ -14,8 +14,16 @@ class MyBookings extends Component {
   }
 
   componentDidMount() {
+    this.focusListener = this.props.navigation.addListener("focus", () =>
+  this.fetchbooks()
+    );
+  }
+  componentWillUnmount() {
+    // this.focusListener.remove();
+  }
+  fetchbooks = () =>{
     console.log("Showing booking details");
-    fetch('http://10.0.2.2:8080/customer/viewMyBookings?customerId='+this.context.users.userName)
+    fetch('http://10.0.2.2:32001/customer/viewMyBookings?customerId='+this.context.users.userName)
     .then((res) => {
         return res.json()
 

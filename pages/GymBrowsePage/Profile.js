@@ -14,7 +14,7 @@ class ProfilePage extends Component {
 
   componentDidMount() {
       console.log("Fetching Personal Details");
-      fetch('http://10.0.2.2:8080/customer/viewMyDetails?customerId='+this.context.users.userName)
+      fetch('http://10.0.2.2:32001/customer/viewMyDetails?customerId='+this.context.users.userName)
       .then((res) => {
           return res.json()
 
